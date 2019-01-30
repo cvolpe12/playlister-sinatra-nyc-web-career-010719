@@ -7,4 +7,10 @@ class ApplicationController < Sinatra::Base
     erb :index
   end
 
+  def cap_each_word(words)
+    words.split(" ").map do |word|
+      word.capitalize
+    end.join(" ")
+  end
+
 end
