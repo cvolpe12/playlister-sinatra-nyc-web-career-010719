@@ -11,6 +11,13 @@ class Artist < ActiveRecord::Base
       word.capitalize
     end.join(" ")
     self.find_by(name: name)
+
+    # name = slug.split("-").join(" ")
+    #
+    # self.all.map do |artist|
+    #   artist.name.downcase
+    # end.find_by(name: name)
+    #
   end
 
 end #end of class
