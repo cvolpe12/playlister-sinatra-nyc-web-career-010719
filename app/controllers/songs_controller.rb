@@ -29,14 +29,14 @@ class SongsController < ApplicationController
 
     # binding.pry
 
-    new_genres = params["genres"].each do |genre_id|
-      SongGenre.create(song_id: @song.id, genre_id: genre_id[0].to_i)
+    params["genres"].each do |genre_id|
+      SongGenre.create(song_id: @song.id, genre_id: genre_id.to_i)
     end
 
     # binding.pry
     puts "Successfully created song."
 
-    flash[:message] = "Successfully created song."
+    # flash[:message] = "Successfully created song."
     redirect to("/songs/#{@song.slug}")
   end
 
@@ -48,6 +48,27 @@ class SongsController < ApplicationController
 
   patch '/songs/:slug' do
 
+    binding.pry
+    @song = Song.find_by_slug(params[:slug])
+    @artist = Artist.find_by(name: cap_each_word(params["song"]["artist"]))
+
+    @song.update(name: params["song"]["name"], artist_id: @artist.id)
+
+    # SongGenre.where(song_id: @song.id).each do |song_genre| #instance
+    #   song_genre.update(genre_id: )
+    # end
+
+    original_ids = SongGenre.where(song_id: @song.id).map{|sg| sg.genre_id}
+    new_ids = params["genres"].map{|g| g.to_i}
+
+    params["genres"].each do |genre|
+      SongGenre.where(song_id: @song.id).each do |song_genre| #instance
+        puts song_genre.song_id
+        song_genre.update(genre_id: genre)
+      end
+    end
+
+    redirect "/songs/#{@song.slug}"
   end
 
 end #end of SongsController

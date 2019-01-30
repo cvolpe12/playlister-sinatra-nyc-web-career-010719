@@ -9,6 +9,6 @@
 
 
 <h3>List of Genres</h3>
-<% @artist.genres.each do |genre|%>
+<% @artist.genres.uniq.each do |genre|%>
 <a href="/genres/<%= genre.slug %>"> <%= genre.name %></a><br>
 <% end %>
